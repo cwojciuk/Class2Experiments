@@ -7,6 +7,7 @@ package server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.jms.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +23,21 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "TestServlet", urlPatterns = { "/TestServlet" })
 public class TestServlet extends HttpServlet {
 
+    @EJB private TestSessionBean nameBean;
+    /**
+     * @return the nameBean
+     */
+    public TestSessionBean getNameBean() {
+        return nameBean;
+    }
 
+
+    /**
+     * @param nameBean the nameBean to set
+     */
+    public void setNameBean( TestSessionBean nameBean ) {
+        this.nameBean = nameBean;
+    }
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -58,6 +73,7 @@ public class TestServlet extends HttpServlet {
             }
             request.getSession().setAttribute( "count", ++count);
             out.println("<h3>Accessed: " + request.getSession().getAttribute( "count" ) + "</h3>");
+            out.println("<h2>" + nameBean.testBusinessMethod( "Chuck") + "</h2>" );
             out.println( "</body>" );
             out.println( "</html>" );
         } finally {            
